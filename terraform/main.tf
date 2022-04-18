@@ -1,3 +1,16 @@
+module "client-vpn" {
+  source  = "DNXLabs/client-vpn/aws"
+  version = "0.4.0"
+
+  cidr = "10.0.5.0/24"
+  name = "testvpn"
+  subnet_ids = aws_subnet.private.id
+  vpc_id         = aws_vpc.main.id
+  # insert the 5 required variables here
+}
+
+
+
 ########################### NEW VPC ##############################
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
