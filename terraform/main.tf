@@ -211,8 +211,8 @@ resource "aws_security_group" "dns" {
 }
 
 resource "aws_acm_certificate" "vpn_client_root" {
-  private_key = file("certs/client1.domain.tld.key")
-  certificate_body = file("certs/client1.domain.tld.crt")
+  private_key       = file("certs/client1.domain.tld.key")
+  certificate_body  = file("certs/client1.domain.tld.crt")
   certificate_chain = file("certs/ca.crt")
 
   tags = var.default_tags
@@ -220,8 +220,8 @@ resource "aws_acm_certificate" "vpn_client_root" {
 
 
 resource "aws_acm_certificate" "vpn_server_root" {
-  private_key = file("certs/server.key")
-  certificate_body = file("certs/server.crt")
+  private_key       = file("certs/server.key")
+  certificate_body  = file("certs/server.crt")
   certificate_chain = file("certs/ca.crt")
 
   tags = var.default_tags
@@ -230,115 +230,115 @@ resource "aws_acm_certificate" "vpn_server_root" {
 
 ########################### DHCP OPTIONS #########################
 #resource "aws_vpc_dhcp_options" "config" {
-  #domain_name = "tatooine.test"
-  ##domain_name_servers = ["127.0.0.1", "10.0.0.2"]
-  ##domain_name_servers = ["AmazonProvidedDNS", "${aws_instance.public_test[2].private_ip}" ]
-  #domain_name_servers = ["AmazonProvidedDNS"]
-  #tags = merge(var.default_tags, {
-    #Name = "VPC DCHP Options"
-    #},
-  #)
+#domain_name = "tatooine.test"
+##domain_name_servers = ["127.0.0.1", "10.0.0.2"]
+##domain_name_servers = ["AmazonProvidedDNS", "${aws_instance.public_test[2].private_ip}" ]
+#domain_name_servers = ["AmazonProvidedDNS"]
+#tags = merge(var.default_tags, {
+#Name = "VPC DCHP Options"
+#},
+#)
 #}
 #
 #resource "aws_vpc_dhcp_options_association" "dns_resolver" {
-  #vpc_id          = aws_vpc.main.id
-  #dhcp_options_id = aws_vpc_dhcp_options.config.id
+#vpc_id          = aws_vpc.main.id
+#dhcp_options_id = aws_vpc_dhcp_options.config.id
 #}
 #
 #resource "aws_route53_zone" "private" {
-  #name = "tatooine.test"
+#name = "tatooine.test"
 #
-  #vpc {
-    #vpc_id = aws_vpc.main.id
-  #}
-  #tags = merge(var.default_tags, {
-    #Name = "aws_vpc_dhcp_options_association"
-    #},
-  #)
+#vpc {
+#vpc_id = aws_vpc.main.id
+#}
+#tags = merge(var.default_tags, {
+#Name = "aws_vpc_dhcp_options_association"
+#},
+#)
 #}
 #
 #locals {
-  #host_names = {
-    #namea = "syslog-0.tatooine.test"
-    #nameb = "syslog-1.tatooine.test"
-    #namec = "dns.tatooine.test"
-    #named = "client.tatooine.test"
-    #namee = "mirror.tatooine.test"
-  #}
-  #deploy_names = {
-    #deploya = aws_instance.public_test[0]
-    #deployb = aws_instance.public_test[1]
-    #deployc = aws_instance.public_test[2]
-    #deployd = aws_instance.public_test[3]
-    #deploye = aws_instance.public_test[4]
-  #}
-  #host_deploy_names = zipmap(values(local.host_names), values(local.deploy_names))
+#host_names = {
+#namea = "syslog-0.tatooine.test"
+#nameb = "syslog-1.tatooine.test"
+#namec = "dns.tatooine.test"
+#named = "client.tatooine.test"
+#namee = "mirror.tatooine.test"
+#}
+#deploy_names = {
+#deploya = aws_instance.public_test[0]
+#deployb = aws_instance.public_test[1]
+#deployc = aws_instance.public_test[2]
+#deployd = aws_instance.public_test[3]
+#deploye = aws_instance.public_test[4]
+#}
+#host_deploy_names = zipmap(values(local.host_names), values(local.deploy_names))
 #}
 #
 #resource "aws_route53_record" "domain_records" {
-  #for_each        = local.host_deploy_names
-  #zone_id         = aws_route53_zone.private.zone_id
-  #allow_overwrite = true
-  #name            = each.key
-  #type            = "A"
-  #ttl             = "300"
-  #records         = [each.value.private_ip]
+#for_each        = local.host_deploy_names
+#zone_id         = aws_route53_zone.private.zone_id
+#allow_overwrite = true
+#name            = each.key
+#type            = "A"
+#ttl             = "300"
+#records         = [each.value.private_ip]
 #}
 ############################ DHCP OPTIONS #########################
 #
 ############################ EC2 INSTANCES ########################
-#resource "aws_key_pair" "ssh" {
-  #key_name   = "ssh_key_pair"
-  #public_key = file(pathexpand("~/.ssh/id_ed25519_tf_acg.pub"))
-  #tags = merge(var.default_tags, {
-    #Name = "ssh_key_pair"
-    #},
-  #)
-#}
-#
-#data "aws_ami" "latest-Redhat" {
-  #most_recent = true
-  #owners      = ["309956199498"] # Redhat owner ID
-#
-  #filter {
-    #name   = "name"
-    #values = ["RHEL_HA-8.5.0_HVM-2*"]
-  #}
-#
-  #filter {
-    #name   = "virtualization-type"
-    #values = ["hvm"]
-  #}
-  #tags = var.default_tags
-#}
+resource "aws_key_pair" "ssh" {
+  key_name   = "ssh_key_pair"
+  public_key = file(pathexpand("~/.ssh/id_ed25519_tf_acg.pub"))
+  tags = merge(var.default_tags, {
+    Name = "ssh_key_pair"
+    },
+  )
+}
+
+data "aws_ami" "latest-Redhat" {
+  most_recent = true
+  owners      = ["309956199498"] # Redhat owner ID
+
+  filter {
+    name   = "name"
+    values = ["RHEL_HA-8.5.0_HVM-2*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  tags = var.default_tags
+}
 
 # public instance
 #resource "aws_instance" "public_test" {
-  #count           = 5
-  #ami             = data.aws_ami.latest-Redhat.id # Get latest RH 8.5x image
-  #subnet_id       = aws_subnet.public.id
-  #security_groups = [aws_security_group.public_ssh.id, aws_security_group.icmp.id, aws_security_group.syslog_ng.id, aws_security_group.dns.id]
-  #instance_type   = "t3.micro"
-  ##iam_instance_profile = "EC2SSMRole"
-  #key_name = "ssh_key_pair"
-  #tags = merge(var.default_tags, {
-    #Name = "public-instance-test"
-    #},
-  #)
+#count           = 5
+#ami             = data.aws_ami.latest-Redhat.id # Get latest RH 8.5x image
+#subnet_id       = aws_subnet.public.id
+#security_groups = [aws_security_group.public_ssh.id, aws_security_group.icmp.id, aws_security_group.syslog_ng.id, aws_security_group.dns.id]
+#instance_type   = "t3.micro"
+##iam_instance_profile = "EC2SSMRole"
+#key_name = "ssh_key_pair"
+#tags = merge(var.default_tags, {
+#Name = "public-instance-test"
+#},
+#)
 #}
 
-# private instance
-#resource "aws_instance" "private_test" {
-#ami             = "ami-0b28dfc7adc325ef4"
-#subnet_id       = aws_subnet.private.id
-#security_groups = [aws_security_group.private_ssh.id, aws_security_group.icmp.id]
-#instance_type   = "t3.micro"
-#count           = 1
-#iam_instance_profile = "EC2SSMRole"
-#key_name             = "ssh"
-#tags = {
-#Name = "private-instance-test"
-#CreatedBy = "tf-syslog-ng"
-#}
-#}
+resource "aws_instance" "private_test" {
+  ami             = data.aws_ami.latest-Redhat.id # Get latest RH 8.5x image
+  subnet_id       = aws_subnet.private.id
+  security_groups = [aws_security_group.private_ssh.id, aws_security_group.icmp.id]
+  instance_type   = "t3.micro"
+  count           = 1
+  key_name        = "ssh_key_pair"
+
+  tags = merge(var.default_tags, {
+    Name = "private-instance-test"
+    },
+  )
+
+}
 ########################### EC2 INSTANCES ########################
