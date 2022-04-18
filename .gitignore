@@ -35,4 +35,4 @@ override.tf.json
 inventory
 hosts_append
 **/tf_ansible_vars/*
-**/certs/*
+**/terraform/certs/*
