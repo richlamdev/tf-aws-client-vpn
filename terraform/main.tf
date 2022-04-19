@@ -1,16 +1,3 @@
-module "client-vpn" {
-  source  = "DNXLabs/client-vpn/aws"
-  version = "0.4.0"
-
-  cidr = "10.0.5.0/24"
-  name = "testvpn"
-  subnet_ids = aws_subnet.private.id
-  vpc_id         = aws_vpc.main.id
-  # insert the 5 required variables here
-}
-
-
-
 ########################### NEW VPC ##############################
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
@@ -223,22 +210,6 @@ resource "aws_security_group" "dns" {
   )
 }
 
-resource "aws_acm_certificate" "vpn_client_root" {
-  private_key       = file("certs/client1.domain.tld.key")
-  certificate_body  = file("certs/client1.domain.tld.crt")
-  certificate_chain = file("certs/ca.crt")
-
-  tags = var.default_tags
-}
-
-
-resource "aws_acm_certificate" "vpn_server_root" {
-  private_key       = file("certs/server.key")
-  certificate_body  = file("certs/server.crt")
-  certificate_chain = file("certs/ca.crt")
-
-  tags = var.default_tags
-}
 ########################### SECURITY GROUPS ######################
 
 ########################### DHCP OPTIONS #########################
