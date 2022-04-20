@@ -1,10 +1,10 @@
-resource "aws_acm_certificate" "vpn_client_root" {
-  private_key       = file("certs/client1.domain.tld.key")
-  certificate_body  = file("certs/client1.domain.tld.crt")
-  certificate_chain = file("certs/ca.crt")
-
-  tags = var.default_tags
-}
+#resource "aws_acm_certificate" "vpn_client_root" {
+  #private_key       = file("certs/client1.domain.tld.key")
+  #certificate_body  = file("certs/client1.domain.tld.crt")
+  #certificate_chain = file("certs/ca.crt")
+#
+  #tags = var.default_tags
+#}
 
 resource "aws_acm_certificate" "vpn_server_root" {
   private_key       = file("certs/server.key")
@@ -45,7 +45,7 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
 
   authentication_options {
     type                       = "certificate-authentication"
-    root_certificate_chain_arn = aws_acm_certificate.vpn_client_root.arn
+    root_certificate_chain_arn = aws_acm_certificate.vpn_server_root.arn
   }
 
   connection_log_options {
