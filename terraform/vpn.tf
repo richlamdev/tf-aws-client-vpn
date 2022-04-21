@@ -1,9 +1,9 @@
 #resource "aws_acm_certificate" "vpn_client_root" {
-  #private_key       = file("certs/client1.domain.tld.key")
-  #certificate_body  = file("certs/client1.domain.tld.crt")
-  #certificate_chain = file("certs/ca.crt")
+#private_key       = file("certs/client1.domain.tld.key")
+#certificate_body  = file("certs/client1.domain.tld.crt")
+#certificate_chain = file("certs/ca.crt")
 #
-  #tags = var.default_tags
+#tags = var.default_tags
 #}
 
 resource "aws_acm_certificate" "vpn_server_root" {
@@ -38,14 +38,27 @@ resource "aws_security_group" "vpn_access" {
   tags = var.default_tags
 }
 
+resource "aws_iam_saml_provider" "default" {
+  name                   = "TestVPN"
+  saml_metadata_document = file("")
+  tags = var.default_tags
+}
+
 resource "aws_ec2_client_vpn_endpoint" "vpn" {
   description            = "Client VPN example"
   client_cidr_block      = "10.5.0.0/20"
   server_certificate_arn = aws_acm_certificate.vpn_server_root.arn
 
+  # for cert based auth
+  #authentication_options {
+  #type                       = "certificate-authentication"
+  #root_certificate_chain_arn = aws_acm_certificate.vpn_server_root.arn
+  #}
+
+  # for saml 2.0 based auth
   authentication_options {
-    type                       = "certificate-authentication"
-    root_certificate_chain_arn = aws_acm_certificate.vpn_server_root.arn
+    type              = "federated-authentication"
+    saml_provider_arn = aws_iam_saml_provider.default.arn
   }
 
   connection_log_options {
