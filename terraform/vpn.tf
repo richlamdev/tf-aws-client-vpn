@@ -40,7 +40,7 @@ resource "aws_security_group" "vpn_access" {
 
 resource "aws_iam_saml_provider" "default" {
   name                   = "TestVPN"
-  saml_metadata_document = file("")
+  saml_metadata_document = file("idp_meta_data/GoogleIDPMetadata.xml")
   tags = var.default_tags
 }
 
