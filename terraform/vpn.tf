@@ -41,7 +41,7 @@ resource "aws_security_group" "vpn_access" {
 resource "aws_iam_saml_provider" "default" {
   name                   = "TestVPN"
   saml_metadata_document = file("idp_meta_data/GoogleIDPMetadata.xml")
-  tags = var.default_tags
+  tags                   = var.default_tags
 }
 
 resource "aws_ec2_client_vpn_endpoint" "vpn" {
@@ -65,9 +65,10 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
     enabled = false
   }
 
-  vpc_id             = aws_vpc.main.id
-  split_tunnel       = true
-  transport_protocol = "udp"
+  vpc_id              = aws_vpc.main.id
+  split_tunnel        = true
+  transport_protocol  = "udp"
+  self_service_portal = "enabled"
 
   security_group_ids = [aws_security_group.priv_to_priv_ssh.id, aws_security_group.icmp.id, aws_security_group.vpn_access.id]
   tags               = var.default_tags
