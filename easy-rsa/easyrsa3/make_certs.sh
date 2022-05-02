@@ -16,7 +16,7 @@
 
 # Generate the client certificate and key.
 # Make sure to save the client certificate and the client private key because you will need them when you configure the client.
-./easyrsa build-client-full client1.domain.tld nopass
+#./easyrsa build-client-full client1.domain.tld nopass
 
 # copy over required certificates (files) to terraform directory to
 # upload to AWS ACM
@@ -26,7 +26,8 @@ mkdir -pv $CERT_DIR
 cp pki/ca.crt $CERT_DIR
 cp pki/issued/server.crt $CERT_DIR
 cp pki/private/server.key $CERT_DIR
-cp pki/issued/client1.domain.tld.crt $CERT_DIR
-cp pki/private/client1.domain.tld.key $CERT_DIR
+
+#cp pki/issued/client1.domain.tld.crt $CERT_DIR
+#cp pki/private/client1.domain.tld.key $CERT_DIR
 
 exit 0

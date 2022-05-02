@@ -128,6 +128,9 @@ fi
 
 #set_var EASYRSA_CERT_EXPIRE	825
 
+# Set for three year expiry
+set_var EASYRSA_CERT_EXPIRE	1095
+
 # How many days until the next CRL publish date?  Note that the CRL can still be
 # parsed after this timeframe passes. It is only used for an expected next
 # publication date.
