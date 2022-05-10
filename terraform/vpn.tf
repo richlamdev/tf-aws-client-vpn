@@ -14,39 +14,16 @@ resource "aws_acm_certificate" "vpn_server_root" {
   tags = var.default_tags
 }
 
-resource "aws_security_group" "vpn_access" {
-  vpc_id = aws_vpc.main.id
-  name   = "vpn-example-sg"
-
-  ingress {
-    from_port = 443
-    protocol  = "UDP"
-    to_port   = 443
-    cidr_blocks = [
-    "0.0.0.0/0"]
-    description = "Incoming VPN connection"
-  }
-
-  egress {
-    from_port = 0
-    protocol  = "-1"
-    to_port   = 0
-    cidr_blocks = [
-    "0.0.0.0/0"]
-  }
-
-  tags = var.default_tags
-}
 
 resource "aws_iam_saml_provider" "default" {
-  name                   = "TestVPN"
+  name                   = "Google_IdP"
   saml_metadata_document = file("idp_meta_data/GoogleIDPMetadata.xml")
   tags                   = var.default_tags
 }
 
 resource "aws_ec2_client_vpn_endpoint" "vpn" {
-  description            = "Client VPN example"
-  client_cidr_block      = "10.5.0.0/20"
+  description            = "AWS Client VPN"
+  client_cidr_block      = var.vpn_client_cidr_block
   server_certificate_arn = aws_acm_certificate.vpn_server_root.arn
 
   # for cert based auth
@@ -67,10 +44,10 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
 
   vpc_id              = aws_vpc.main.id
   split_tunnel        = true
-  transport_protocol  = "udp"
-  self_service_portal = "enabled"
+  transport_protocol  = var.vpn_client_protocol
+  #self_service_portal = "enabled"
 
-  security_group_ids = [aws_security_group.priv_to_priv_ssh.id, aws_security_group.icmp.id, aws_security_group.vpn_access.id]
+  security_group_ids = [aws_security_group.private_subnet_ssh.id, aws_security_group.icmp.id, aws_security_group.vpn_access.id]
   tags               = var.default_tags
 }
 
@@ -93,3 +70,4 @@ resource "aws_ec2_client_vpn_authorization_rule" "vpn_auth_rule" {
   target_network_cidr    = aws_vpc.main.cidr_block
   authorize_all_groups   = true
 }
+
