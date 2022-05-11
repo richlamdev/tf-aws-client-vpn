@@ -18,6 +18,14 @@ variable "private_subnet_list" {
   default = ["10.0.2.0/24"]
 }
 
+variable "egress_all_cidr_blocks" {
+  default = "0.0.0.0/0"
+}
+
+variable "egress_all_cidr_all_block_list" {
+  default = ["0.0.0.0/0"]
+}
+
 variable "vpn_client_cidr_block" {
   default = "10.5.0.0/20"
 }
@@ -25,6 +33,16 @@ variable "vpn_client_cidr_block" {
 variable "vpn_client_protocol" {
   default = "udp"
 }
+
+variable "egress_all_default_port" {
+  default = 0
+  description = "This port number should always be used if the protocol is '-1 (all)'"
+}
+
+variable "egress_all_protocol" {
+  default = "-1"
+}
+
 
 ##############
 
