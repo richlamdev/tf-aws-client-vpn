@@ -13,7 +13,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   # 251 IP addresses each
-  cidr_block        = var.private_subnet
+  cidr_block        = var.public_subnet
   availability_zone = "us-west-2a"
   tags = merge(var.default_tags, {
     Name = "10.0.1.0 - Public Subnet"
@@ -26,7 +26,7 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   # 251 IP addresses each
-  cidr_block        = var.public_subnet
+  cidr_block        = var.private_subnet
   availability_zone = "us-west-2a"
   tags = merge(var.default_tags, {
     Name = "10.0.2.0 - Private Subnet"

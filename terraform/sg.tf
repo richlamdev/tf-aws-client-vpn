@@ -6,9 +6,7 @@ resource "aws_security_group" "vpn_access" {
     from_port = var.aws_client_vpn_port
     to_port   = var.aws_client_vpn_port
     protocol  = var.aws_client_vpn_protocol
-    cidr_blocks = [
-    "0.0.0.0/0"]
-    description = "Incoming VPN connection"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
     from_port = var.egress_all_default_port
