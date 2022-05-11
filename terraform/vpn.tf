@@ -34,7 +34,7 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
 
   # for saml 2.0 based auth
   authentication_options {
-    type              = "federated-authentication"
+    type              = var.authentication_options_type
     saml_provider_arn = aws_iam_saml_provider.default.arn
   }
 
@@ -43,7 +43,7 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
   }
 
   vpc_id              = aws_vpc.main.id
-  split_tunnel        = true
+  split_tunnel        = var.split_tunnel
   transport_protocol  = var.vpn_client_protocol
   #self_service_portal = "enabled"
 
@@ -68,6 +68,6 @@ resource "aws_ec2_client_vpn_network_association" "vpn_subnets" {
 resource "aws_ec2_client_vpn_authorization_rule" "vpn_auth_rule" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.vpn.id
   target_network_cidr    = aws_vpc.main.cidr_block
-  authorize_all_groups   = true
+  authorize_all_groups   = var.authorize_all_groups
 }
 

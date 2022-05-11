@@ -43,6 +43,21 @@ variable "egress_all_protocol" {
   default = "-1"
 }
 
+variable "authentication_options_type" {
+  default = "federated-authentication"
+}
+
+variable "connection_log_options_enabled" {
+  default = false
+}
+
+variable "split_tunnel" {
+  default = true
+}
+
+variable "authorize_all_groups" {
+  default = true
+}
 
 ##############
 

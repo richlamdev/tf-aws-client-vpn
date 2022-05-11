@@ -1,0 +1,19 @@
+module "client_vpn" {
+  source = "../aws-modules/client_vpn"
+  environment = var.environment
+  aws_client_vpn_port =  var.aws_client_vpn_port
+  aws_client_vpn_protocol = var.aws_client_vpn_protocol
+  private_subnet_ssh_port = var.private_subnet_ssh_port
+  private_subnet_ssh_protocol = var.private_subnet_ssh_protocol
+  private_subnet_list = var.private_subnet_list
+  egress_all_cidr_blocks = var.egress_all_cidr_blocks
+  egress_all_cidr_all_block_list = var.egress_all_cidr_all_block_list
+  vpn_client_cidr_block = var.vpn_client_cidr_block
+  vpn_client_protocol = var.vpn_client_protocol
+  egress_all_default_port = var.egress_all_default_port
+  egress_all_protocol = var.egress_all_protocol
+  authentication_options_type = var.authentication_options_type
+  connection_log_options_enabled = var.connection_log_options_enabled
+  split_tunnel = var.split_tunnel
+  authorize_all_groups = var.authorize_all_groups
+}

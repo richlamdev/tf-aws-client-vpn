@@ -6,7 +6,7 @@ resource "aws_security_group" "vpn_access" {
     from_port = var.aws_client_vpn_port
     to_port   = var.aws_client_vpn_port
     protocol  = var.aws_client_vpn_protocol
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.egress_all_cidr_all_block_list
   }
   egress {
     from_port = var.egress_all_default_port
@@ -41,13 +41,13 @@ resource "aws_security_group" "private_subnet_ssh" {
 
 resource "aws_security_group" "icmp" {
   name        = "sg_icmp"
-  description = "allow icmp from public or private subnet"
+  description = "allow icmp within vpc"
   vpc_id      = aws_vpc.main.id
   ingress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.0.0.0/20"]
+    cidr_blocks = [aws_vpc.main.cidr_block]
   }
   egress {
     from_port   = var.egress_all_default_port
