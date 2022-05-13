@@ -14,6 +14,16 @@ resource "aws_acm_certificate" "vpn_server_root" {
   tags = var.default_tags
 }
 
+resource "aws_cloudwatch_log_group" "client_vpn" {
+  name = "aws_client_vpn"
+
+  tags = var.default_tags
+}
+
+resource "aws_cloudwatch_log_stream" "logs" {
+  name           = "connection_logs"
+  log_group_name = "${aws_cloudwatch_log_group.client_vpn.name}"
+}
 
 resource "aws_iam_saml_provider" "default" {
   name                   = "Google_IdP"
@@ -39,13 +49,16 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
   }
 
   connection_log_options {
-    enabled = false
+    enabled = true
+    cloudwatch_log_group  = aws_cloudwatch_log_group.client_vpn.name
+    cloudwatch_log_stream = aws_cloudwatch_log_stream.logs.name
   }
 
   vpc_id              = aws_vpc.main.id
   split_tunnel        = var.split_tunnel
   transport_protocol  = var.vpn_client_protocol
-  #self_service_portal = "enabled"
+  session_timeout_hours = 8
+  #self_service_portal = "enabled" # not possible at this time, due to current Google Workspaces SAML/SSO implementation
 
   security_group_ids = [aws_security_group.private_subnet_ssh.id, aws_security_group.icmp.id, aws_security_group.vpn_access.id]
   tags               = var.default_tags
