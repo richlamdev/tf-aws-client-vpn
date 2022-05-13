@@ -20,12 +20,17 @@
 
 ## To use:
 
-* 1) Create server certificate, server key file, and certificate chain.  Install to terraform/certs/ directory
-     Obtain SAML/SSO IdP file if SAML/SSO authentication is the authentication method chosen.
-* 2) Create client certificates, if mutual authentication is desired.  Uncomment section in vpn.tf to enable uploading of 
-     client certificates.
-* 3) Create appropriate SSH keypair and copy it to the appropriate directory to ensure it's pushed to the EC2 instance. (see code)
-* 4) Run ```terraform init```, ```terraform plan```, ```terraform apply --auto-approve``` 
-* 5) Download the OVPN file via the GUI. (or CLI)
-* 6) Connect via OpenVPN client via SAML, ensure you logged into authorized Google account via your default OS browser.
-* 7) Connect via OpenVPN client via client certificates, ensure client certificates are in the appropriate path.
+ 1) Create server certificate, server key file, and certificate chain.  Install to terraform/certs/ directory
+    Obtain SAML/SSO IdP file if SAML/SSO authentication is the authentication method chosen.
+ 2) Create client certificates, if mutual authentication is desired.  Uncomment section in vpn.tf to enable uploading of 
+    client certificates.
+ 3) Create appropriate SSH keypair and copy it to the appropriate directory to ensure it's pushed to the EC2 instance. (see code)
+ 4) Run ```terraform init```, ```terraform plan```, ```terraform apply --auto-approve``` 
+ 5) Download the OVPN file via the GUI. (or CLI)
+ 6) Connect via OpenVPN client via SAML, ensure you logged into authorized Google account via your default OS browser.
+ 7) Connect via OpenVPN client via client certificates, ensure client certificates are in the appropriate path.
+
+
+## To download Client OVPN file via CLI:
+
+aws ec2 export-client-vpn-client-configuration --client-vpn-endpoint-id cvpn-endpoint-<YOUR-ENDPOINT-ID-HERE> --output text --profile cloud_user --region us-west-2 > downloaded-client-config.ovpn
