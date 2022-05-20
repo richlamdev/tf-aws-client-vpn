@@ -33,5 +33,5 @@ resource "aws_route53_record" "domain_records" {
   name            = "richy"
   type            = "A"
   ttl             = "300"
-  records         = "192.168.100.100"
+  records         = ["192.168.100.100"]
 }

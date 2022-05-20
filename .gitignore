@@ -36,3 +36,4 @@ inventory
 hosts_append
 **/terraform/certs/*
 **/terraform/idp_meta_data/*
+**/terraform/*.sh

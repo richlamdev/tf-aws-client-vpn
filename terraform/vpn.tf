@@ -68,3 +68,8 @@ resource "aws_ec2_client_vpn_authorization_rule" "vpn_auth_rule" {
   authorize_all_groups   = var.authorize_all_groups
 }
 
+#resource "aws_ec2_client_vpn_route" "route" {
+  #client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.vpn.id
+  #destination_cidr_block = "0.0.0.0/0"
+  #target_vpc_subnet_id   = aws_ec2_client_vpn_network_association.vpn_subnets.subnet_id
+#}
