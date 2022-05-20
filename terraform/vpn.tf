@@ -38,6 +38,7 @@ resource "aws_ec2_client_vpn_endpoint" "vpn" {
   }
 
   vpc_id              = aws_vpc.main.id
+  #dns_servers         = ["1.1.1.1"]
   split_tunnel        = var.split_tunnel
   transport_protocol  = var.vpn_client_protocol
   session_timeout_hours = 8

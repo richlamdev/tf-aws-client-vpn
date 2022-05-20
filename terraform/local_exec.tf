@@ -4,3 +4,9 @@ resource "null_resource" "get_openVPN_config" {
   }
 }
 
+resource "local_file" "ssh_connection" {
+  filename = "ssh_connect.sh"
+  content  = <<EOF
+ssh -i ~/.ssh/id_ed25519_tf_acg -o StrictHostKeyChecking=no ec2-user@${aws_instance.private_test[0].private_ip}
+EOF
+}
